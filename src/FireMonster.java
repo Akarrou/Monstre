@@ -2,44 +2,45 @@ import java.util.Random;
 
 public class FireMonster extends Monster {
 
-    public FireMonster(String name) {
-        super(name);
+    public FireMonster(String name, boolean capture) {
+        super(name, capture);
         setType("Fire");
         setDamage(10);
+        String[] t = {"Fire Boullet", "Allumete", "Barbuc"};
+        setNameAttac(t);
     }
 
     @Override
-    public void takeHit(Monster adversaire) {
+    public void takeHit(Monster adversaire, char attac) {
 
         Random r = new Random();
         int nb = r.nextInt(9);
-
-        if(adversaire.getType().equals("Water")){
-            if ( nb == 1) {
-                this.setLife(this.getLife() - adversaire.getDamage()*3);
-                System.out.println("Coup Critique ! " + adversaire.getName() + " inflige 30 dégats");
-            }
-            else {
-                this.setLife(this.getLife() - adversaire.getDamage() * 2);
-                System.out.println(adversaire.getName() + " inflige 20 dégats");
-            }
-
+        /*Choix de l'attaque du monstre*/
+        switch (attac) {
+            case 'F':
+                setDamage(10);
+                break;
+            case 'A':
+                setDamage(5);
+                break;
+            case 'B':
+                setDamage(20);
+                break;
+            default:
         }
-        if(adversaire.getType().equals("Grass")){
-            if ( nb == 1) {
-                this.setLife(this.getLife() - adversaire.getDamage());
-                System.out.println("Coup Critique ! " + adversaire.getName() + " inflige 10 dégats");
-            }
-            else {
-                this.setLife(this.getLife() - adversaire.getDamage() / 2);
-                System.out.println(adversaire.getName() + " inflige 5 dégats");
-            }
+        /*Set des domage en fonction du Type de monstre*/
+        if (adversaire.getType().equals("Water")) {
+            adversaire.setLife(adversaire.getLife() - getDamage() / 2);
+            System.out.println(adversaire.getName() + " reçois " + getDamage() / 2 + " de dommage il lui reste " +adversaire.getLife() + " points de vie\n");
+        }
+        if (adversaire.getType().equals("Fire")) {
+            adversaire.setLife(adversaire.getLife() - getDamage());
+            System.out.println(adversaire.getName() + " reçois " + getDamage() + " de dommage il lui reste " +adversaire.getLife() + " points de vie\n");
+        }
+        if (adversaire.getType().equals("Grass")) {
+            adversaire.setLife(adversaire.getLife() - getDamage() * 2);
+            System.out.println(adversaire.getName() + " reçois " + getDamage() * 2 + " de dommage il lui reste " +adversaire.getLife() + " points de vie\n");
         }
 
-        if (this.getLife()> 0) {
-            System.out.println(this.getName() + " a encore " + this.getLife() + " points de vie.");
-        } else {
-            System.out.println(this.getName() + " est KO !");
-        }
     }
 }

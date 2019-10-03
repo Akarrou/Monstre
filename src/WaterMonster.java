@@ -1,43 +1,46 @@
 import java.util.Random;
 
 public class WaterMonster extends Monster {
-    public WaterMonster(String name) {
-        super(name);
+    public WaterMonster(String name,boolean capture) {
+        super(name,capture);
         setType("Water");
         setDamage(10);
+        String[] t = {"Plongon", "Marrée", "Eclaboussure"};
+        setNameAttac(t);
     }
 
     @Override
-    public void takeHit(Monster adversaire) {
+    public void takeHit(Monster adversaire, char attac) {
+
         Random r = new Random();
         int nb = r.nextInt(9);
-
-        if(adversaire.getType().equals("Fire")){
-            if ( nb == 1) {
-                this.setLife(this.getLife() - adversaire.getDamage());
-                System.out.println("Coup Critique ! " + adversaire.getName() + " inflige 10 dégats");
-            }
-            else {
-                this.setLife(this.getLife() - adversaire.getDamage() / 2);
-                System.out.println(adversaire.getName() + " inflige 5 dégats");
-            }
-        }
-        if(adversaire.getType().equals("Grass")){
-            if ( nb == 1) {
-                this.setLife(this.getLife() - adversaire.getDamage()*3);
-                System.out.println("Coup Critique ! " + adversaire.getName() + " inflige 30 dégats");
-            }
-            else {
-
-                this.setLife(this.getLife() - adversaire.getDamage() * 2);
-                System.out.println(adversaire.getName() + " inflige 20 dégats");
-            }
+        switch (attac) {
+            case 'P':
+                setDamage(10);
+                break;
+            case 'M':
+                setDamage(5);
+                break;
+            case 'E':
+                setDamage(20);
+                break;
+            default:
         }
 
-        if (this.getLife()> 0) {
-            System.out.println(this.getName() + " a encore " + this.getLife() + " points de vie.");
-        } else {
-            System.out.println(this.getName() + " est KO !");
+        if (adversaire.getType().equals("Water")) {
+            adversaire.setLife(adversaire.getLife() - getDamage() / 2);
+            System.out.println(adversaire.getName() + " reçois " + getDamage() / 2 + " de dommage il lui reste " +adversaire.getLife() + " points de vie\n");
         }
+        if (adversaire.getType().equals("Fire")) {
+            adversaire.setLife(adversaire.getLife() - getDamage());
+            System.out.println(adversaire.getName() + " reçois " + getDamage() + " de dommage il lui reste " +adversaire.getLife() + " points de vie\n");
+        }
+        if (adversaire.getType().equals("Grass")) {
+            adversaire.setLife(adversaire.getLife() - getDamage() * 2);
+            System.out.println(adversaire.getName() + " reçois " + getDamage() * 2 + " de dommage il lui reste " +adversaire.getLife() + " points de vie\n");
+        }
+
+
+
     }
 }
